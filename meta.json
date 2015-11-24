@@ -4,23 +4,74 @@
 {
     //Required. Inputs the module expects.
     "inputs": [
-        //e.g.
-        /*
         {
-            "id": "from",
-            "title":"From"
+            "id": "owner",
+            "title":"owner"
+        },
+        {
+            "id": "repo",
+            "title":"repo"
+        },
+        {
+            "id": "sha",
+            "title":"sha"
+        },
+        {
+            "id": "body",
+            "title":"body"
+        },
+        {
+            "id": "path",
+            "title":"path"
+        },
+        {
+            "id": "position",
+            "title":"position"
+        },
+        {
+            "id": "line",
+            "title":"line"
         }
-        */
     ],
     //Required. Outputs the module emits.
     "outputs": [
-      //e.g.
-      /*
         {
-            "id": "from",
-            "title":"From"
+            "id": "id",
+            "title":"ID"
+        },
+        {
+          "id": "html_url",
+          "title":"html_url"
+        },
+        {
+            "id": "body",
+            "title":"body"
+        },
+        {
+            "id": "path",
+            "title":"path"
+        },
+        {
+            "id": "position",
+            "title":"position"
+        },
+        {
+            "id": "line",
+            "title":"line"
+        },
+        {
+            "id": "commit_id",
+            "title":"commit_id"
+        },
+        {
+            "id": "user",
+            "title":"user"
+        },
+        {
+            "id": "created_at",
+            "title":"created_at"
         }
-      */
     ],
-    "title": "GitHub Create Comment" /* Required.A display name for the module */
+    /* Required.A display name for the module */
+    "title": "GitHub Create Comment"
 }

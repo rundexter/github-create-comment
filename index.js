@@ -67,7 +67,7 @@ module.exports = {
         });
 
         this.gitHubAuthenticate(dexter, github);
-        
+
         if (
             step.input('body', undefined).first() !== undefined &&
             step.input('path', undefined).first() !== undefined &&
@@ -94,7 +94,7 @@ module.exports = {
 
         } else {
 
-            this.fail('A input variable is required for this module');
+            this.fail('All inputs variable is required for this module');
         }
     }
 };
