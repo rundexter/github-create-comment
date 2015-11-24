@@ -63,7 +63,13 @@ module.exports = _.merge({
              */
             input: {
                 //Replace VAR1 with the name of an expected input, and add more inputs as needed.
-                VAR1: 'foo'
+                body: 'body',
+                path: 'README.md',
+                position: 4,
+                line: 14,
+                owner: 'gitHub',
+                repo: 'gitHub-test',
+                sha: '6c8de315efb92e4b23c9a2a2a120257f593bd4db'
             }
         }
     }
