@@ -32,8 +32,7 @@ module.exports = {
      * @param {AppData} dexter Container for all data used in this workflow.
      */
     run: function(step, dexter) {
-        var credentials = dexter.provider('github').credentials(),
-            inputs = util.pickInputs(step, pickInputs),
+        var inputs = util.pickInputs(step, pickInputs),
             validateErrors = util.checkValidateErrors(inputs, pickInputs);
         console.log(credentials);
         // check params.
@@ -42,7 +41,7 @@ module.exports = {
 
         github.authenticate({
             type: 'oauth',
-            token: credentials.token
+            token: dexter.provider('github').token()
         });
 
         github.pullRequests.createComment(inputs, function (err, comment) {
