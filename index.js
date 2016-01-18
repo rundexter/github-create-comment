@@ -34,7 +34,7 @@ module.exports = {
     run: function(step, dexter) {
         var inputs = util.pickInputs(step, pickInputs),
             validateErrors = util.checkValidateErrors(inputs, pickInputs);
-        console.log(credentials);
+        console.log(dexter.provider('github').token());
         // check params.
         if (validateErrors)
             return this.fail(validateErrors);
