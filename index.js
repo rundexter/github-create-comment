@@ -1,58 +1,30 @@
-var GitHubApi = require("github");
-var _ = require('lodash');
+var _ = require('lodash'),
+    util = require('./util.js'),
+    GitHubApi = require("github"),
+    github = new GitHubApi({ version: '3.0.0' });
 
-var pickResultData = [
-    'html_url',
-    'id',
-    'body',
-    'path',
-    'position',
-    'line',
-    'commit_id',
-    'user.login',
-    'created_at'
-];
+var pickInputs = {
+        'user': 'owner',
+        'repo': 'repo',
+        'body': 'body',
+        'path': 'path',
+        'position': 'position',
+        'number': 'line',
+        'commit_id': 'sha'
+    },
+    pickOutputs = {
+        'html_url': 'html_url',
+        'id': 'id',
+        'body': 'body',
+        'path': 'path',
+        'position': 'position',
+        'line': 'line',
+        'commit_id': 'commit_id',
+        'user_login': 'user.login',
+        'created_at': 'created_at'
+    };
 
 module.exports = {
-    /**
-     * Pick API result.
-     *
-     * @param events
-     * @returns {Array}
-     */
-    pickResultData: function (comment) {
-        var result = [];
-
-        pickResultData.forEach(function (dataKey) {
-            if (!_.isUndefined(_.get(comment, dataKey, undefined))) {
-
-                _.set(result, dataKey, _.get(comment, dataKey));
-            }
-        });
-
-        return result;
-    },
-
-    /**
-     * Authenticate gitHub user.
-     *
-     * @param dexter
-     * @param github
-     */
-    gitHubAuthenticate: function (dexter, github) {
-
-        if (dexter.environment('GitHubUserName') && dexter.environment('GitHubPassword')) {
-
-            github.authenticate({
-                type: dexter.environment('GitHubType') || "basic",
-                username: dexter.environment('GitHubUserName'),
-                password: dexter.environment('GitHubPassword')
-            });
-        } else {
-            this.fail('A GitHubUserName and GitHubPassword environment variable is required for this module');
-        }
-    },
-
     /**
      * The main entry point for the Dexter module
      *
@@ -60,41 +32,22 @@ module.exports = {
      * @param {AppData} dexter Container for all data used in this workflow.
      */
     run: function(step, dexter) {
+        var credentials = dexter.provider('github').credentials(),
+            inputs = util.pickInputs(step, pickInputs),
+            validateErrors = util.checkValidateErrors(inputs, pickInputs);
+        // check params.
+        if (validateErrors)
+            return this.fail(validateErrors);
 
-        var github = new GitHubApi({
-            // required 
-            version: "3.0.0"
+        github.authenticate({
+            type: 'oauth',
+            token: credentials.token
         });
 
-        this.gitHubAuthenticate(dexter, github);
+        github.pullRequests.createComment(inputs, function (err, comment) {
 
-        if (
-            step.input('body', undefined).first() !== undefined &&
-            step.input('path', undefined).first() !== undefined &&
-            step.input('position', undefined).first() !== undefined &&
-            step.input('line', undefined).first() !== undefined &&
-            step.input('owner', undefined).first() !== undefined &&
-            step.input('repo', undefined).first() !== undefined &&
-            step.input('sha', undefined).first() !== undefined
-        ) {
-            var commentParams = {
-                user: step.input('owner').first(),
-                repo: step.input('repo').first(),
-                body: step.input('body').first(),
-                path: step.input('path').first(),
-                position: step.input('position').first(),
-                number: step.input('line').first(),
-                commit_id: step.input('sha').first()
-            };
+           err? this.fail(err) : this.complete(util.pickOutputs(comment, pickOutputs));
+        }.bind(this));
 
-            github.pullRequests.createComment(commentParams, function (err, comment) {
-
-               err? this.fail(err) : this.complete(this.pickResultData(comment));
-            }.bind(this));
-
-        } else {
-
-            this.fail('All inputs variable is required for this module');
-        }
     }
 };

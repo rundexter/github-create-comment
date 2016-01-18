@@ -41,37 +41,40 @@
         },
         {
           "id": "html_url",
-          "title":"html_url"
+          "title":"HTML URL"
         },
         {
             "id": "body",
-            "title":"body"
+            "title":"Body"
         },
         {
             "id": "path",
-            "title":"path"
+            "title":"Path"
         },
         {
             "id": "position",
-            "title":"position"
+            "title":"Position"
         },
         {
             "id": "line",
-            "title":"line"
+            "title":"Line"
         },
         {
             "id": "commit_id",
-            "title":"commit_id"
+            "title":"Commit ID"
         },
         {
-            "id": "user",
-            "title":"user"
+            "id": "user_login",
+            "title":"User Login"
         },
         {
             "id": "created_at",
-            "title":"created_at"
+            "title":"Created At"
         }
     ],
+    "providers": [{
+        "name": "github"
+    }],
     "icon": "github",
     /* Required.A display name for the module */
     "title": "GitHub Create Comment"
